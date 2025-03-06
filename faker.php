@@ -30,5 +30,16 @@ for ($i = 0; $i < 50; $i++) {
 }
 echo "Office table is filled with 50 rows<br>";
 
+$stmt = $conn->prepare("INSERT INTO Employee (lastname, firstname, office_id, address) VALUES (?, ?, ?, ?)");
+for ($i = 0; $i < 200; $i++) {
+    $lastname = $faker->lastName;
+    $firstname = $faker->firstName;
+    $office_id = $faker->numberBetween(1, 50);          // FK
+    $address = $faker->address;
+
+    $stmt->bind_param("ssis", $lastname, $firstname, $office_id, $address);
+    $stmt->execute();
+}
+echo "Employee Data Generated!<br>";
 
 ?>
