@@ -40,6 +40,25 @@ for ($i = 0; $i < 200; $i++) {
     $stmt->bind_param("ssis", $lastname, $firstname, $office_id, $address);
     $stmt->execute();
 }
-echo "Employee Data Generated!<br>";
+echo "Employee table is filled with 200 rows<br>";
+
+$stmt = $conn->prepare("INSERT INTO Transaction (employee_id, office_id, datelog, action, remarks, documentcode) VALUES (?, ?, ?, ?, ?, ?)");
+for ($i = 0; $i < 500; $i++) {
+    $employee_id = $faker->numberBetween(1, 200);       
+    $office_id = $faker->numberBetween(1, 50);          
+    $datelog = $faker->dateTimeBetween('-10 years', 'now')->format('Y-m-d H:i:s');  
+    $action = $faker->word;
+    $remarks = $faker->words(3, true);  
+    $documentcode = $faker->uuid;
+
+    $stmt->bind_param("iissss", $employee_id, $office_id, $datelog, $action, $remarks, $documentcode);
+    $stmt->execute();
+}
+echo "Transaction table filled with 500 rows<br>";
+
+
+// Close Connection
+$stmt->close();
+$conn->close();
 
 ?>
